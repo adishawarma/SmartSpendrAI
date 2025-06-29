@@ -5,7 +5,7 @@ from app.database import SessionLocal
 from app.auth import decode_access_token
 from app.crud import get_user_by_email
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
 def get_db():
     db = SessionLocal()

@@ -32,3 +32,9 @@ class ExpenseOut(ExpenseBase):
     class Config:
         orm_mode = True
 
+class PredictRequest(BaseModel):
+    month: int
+    day_of_week: int
+    is_weekend: bool
+    category: str
+

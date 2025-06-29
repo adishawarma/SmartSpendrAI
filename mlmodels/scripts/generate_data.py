@@ -10,7 +10,7 @@ categories = ['Food', 'Transport', 'Entertainment', 'Bills', 'Shopping', 'Health
 data = []
 for _ in range(2000):
     raw_date = np.random.choice(dates)
-    date = pd.Timestamp(raw_date)  # ✅ Convert to Pandas Timestamp
+    date = pd.Timestamp(raw_date)  
 
     category = np.random.choice(categories)
     amount = max(5, {
@@ -22,8 +22,8 @@ for _ in range(2000):
         'date': date,
         'category': category,
         'amount': round(amount, 2),
-        'month': date.month,            # ✅ now works!
-        'day_of_week': date.weekday(),  # ✅ now works!
+        'month': date.month,            
+        'day_of_week': date.weekday(),  
         'is_weekend': date.weekday() >= 5
     })
 df = pd.DataFrame(data)
