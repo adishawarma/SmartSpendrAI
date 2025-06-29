@@ -24,7 +24,7 @@ function Login() {
 
       const token = response.data.access_token;
       localStorage.setItem("token", token);
-      navigate("/dashboard");
+      window.location.href = "/dashboard";
     } catch (err) {
       console.error("Login failed:", err.response?.data || err.message);
       setError("Invalid credentials. Please try again.");
