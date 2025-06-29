@@ -1,19 +1,22 @@
-# Python
+# ========== PYTHON (Backend) ==========
 backend/venv/
 __pycache__/
 *.pyc
 
-# Node
+# ========== NODE (Frontend) ==========
 frontend/node_modules/
 frontend/dist/
 
-# Environment files (secrets!)
+# ========== ENVIRONMENT VARIABLES ==========
 .env
 *.env
 
-# ML Artifacts
-mlmodels/**/*.pkl
+# ========== MACHINE LEARNING MODELS ==========
+# NOTE: Temporarily include .pkl files for Render deployment
+# Remove the line below if you want to commit .pkl models
+# mlmodels/**/*.pkl
 
-# OS / Editor junk
+# ========== OS / EDITOR / MISC ==========
 .DS_Store
 .vscode/
+*.log
