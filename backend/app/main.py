@@ -11,6 +11,8 @@ from mlmodels.predictor import predict_budget
 from fastapi.middleware.cors import CORSMiddleware
 from mlmodels.predictor import BudgetPredictor
 from app.routes import expenses
+from app.database import init_db
+
 
 
 
@@ -18,6 +20,10 @@ from app.routes import expenses
 
 
 app = FastAPI()
+
+@app.on_event("startup")
+def startup():
+    init_db()
 
 app.include_router(expenses.router)
 
