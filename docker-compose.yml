@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: smartspendr-db
+    environment:
+      POSTGRES_USER: smartuser
+      POSTGRES_PASSWORD: smartpass
+      POSTGRES_DB: smartspendr
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: smartspendr-api
+    environment:
+      DATABASE_URL: postgresql://smartuser:smartpass@postgres:5432/smartspendr
+      JWT_SECRET: your-jwt-secret
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./mlmodels:/app/mlmodels
+
+  frontend:
+    build: ./frontend
+    container_name: smartspendr-web
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+
+volumes:
+  postgres_data:
