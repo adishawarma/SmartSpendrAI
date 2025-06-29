@@ -8,10 +8,20 @@ from app.crud import create_expense, get_expenses_by_user
 from app.dependencies import get_current_user
 from app.routes import predict
 from mlmodels.predictor import predict_budget
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # 👈 or ["*"] for all (dev only)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(predict.router)
 
