@@ -9,11 +9,18 @@ from app.dependencies import get_current_user
 from app.routes import predict
 from mlmodels.predictor import predict_budget
 from fastapi.middleware.cors import CORSMiddleware
+from mlmodels.predictor import BudgetPredictor
+from app.routes import expenses
+
+
 
 
 
 
 app = FastAPI()
+
+app.include_router(expenses.router)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -62,19 +69,30 @@ def list_expenses(user=Depends(get_current_user), db: Session = Depends(get_db))
     return get_expenses_by_user(db, user.id)
 
 @app.get("/predict-budget")
-def get_budget_prediction(user=Depends(get_current_user), db: Session = Depends(get_db)):
+def predict_budget(user=Depends(get_current_user), db: Session = Depends(get_db)):
     expenses = get_expenses_by_user(db, user.id)
+
     if not expenses:
-        return {"prediction": 0.0}
-    
-    latest = max(expenses, key=lambda e: e.date)
-    prediction = predict_budget(
-        month=latest.date.month,
-        day_of_week=latest.date.weekday(),
-        is_weekend=int(latest.date.weekday() >= 5),
-        category=latest.category
-    )
-    return {"prediction": round(prediction, 2)}
+        return {"total_budget": 1000.0, "category_breakdown": {}}
+
+    predictor = BudgetPredictor()
+    data = [{"date": e.date, "category": e.category, "amount": e.amount} for e in expenses]
+    result = predictor.predict_next_month_budget(data)
+
+    return result
+
+@app.get("/predict-budget")
+def predict_budget(user=Depends(get_current_user), db: Session = Depends(get_db)):
+    expenses = get_expenses_by_user(db, user.id)
+
+    if not expenses:
+        return {"total_budget": 1000.0, "category_breakdown": {}}
+
+    predictor = BudgetPredictor()
+    data = [{"date": e.date, "category": e.category, "amount": e.amount} for e in expenses]
+    result = predictor.predict_next_month_budget(data)
+
+    return result
 
 
 from fastapi.security import OAuth2PasswordRequestForm
