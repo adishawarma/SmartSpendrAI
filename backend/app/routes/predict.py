@@ -1,24 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.dependencies import get_current_user
 from app.schemas import PredictRequest
-from app.database import SessionLocal
-from mlmodels.predictor import predict_budget
+from app.database import get_db  
 from sqlalchemy.orm import Session
-from app.database import get_db
 from app.auth import get_current_user
 from app.models import Expense
+from mlmodels.predictor import predict_budget
 
 router = APIRouter()
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 @router.post("/predict-budget")
-def predict(request: PredictRequest, user=Depends(get_current_user), db=Depends(get_db)):
+def predict(request: PredictRequest, user=Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         result = predict_budget(
             month=request.month,
