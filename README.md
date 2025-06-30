@@ -3,7 +3,7 @@
 **SmartSpendr AI** is an intelligent expense prediction and budget planning web app powered by FastAPI, React, and Machine Learning. It helps users analyze past spending habits and generate personalized budget forecasts for the upcoming month.
 
 <div align="center">
-  <img src="./frontend/public/home_photo.png" width="120" alt="SmartSpendrAI Icon"/>
+  <img src="./frontend/public/home_photo.png" width="400" alt="SmartSpendrAI Icon"/>
 </div>
 
 ---
